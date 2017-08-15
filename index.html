@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="Curso de Vue 2">
+    <meta name="author" content="https://styde.net">
+    <link rel="icon" href="favicon.ico">
+
+    <title>Curso de Vue 2 - Styde.net</title>
+
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div id="app" class="container">
+    <div v-if="!formSubmitted">
+        <form @submit.prevent="submitForm">
+            <h4>Regístrate:</h4>
+
+            <div class="form-group">
+                <label for="first_name">Nombre:</label>
+                <input v-model="first_name" type="text" id="first_name" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="last_name">Apellido:</label>
+                <input v-model="last_name" type="text" id="last_name" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-primary"
+                :disabled="!isFormValid()">Continuar</button>
+        </form>
+    </div>
+    <div v-else>
+        <h4>Bienvenido, {{ first_name }} {{ last_name }}</h4>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2017 Styde.net.</p>
+    </footer>
+</div>
+<script src="js/vue2.1.8.js" type="text/javascript"></script>
+<script>
+
+    new Vue({
+        el : "#app",
+        data : {
+            first_name : '',
+            last_name : '',
+            formSubmitted : false
+        },
+        methods : {
+            isFormValid : function () {
+                return this.first_name != "" && this.last_name != ""
+            },
+            submitForm : function () {
+                if(!this.isFormValid()) return;
+
+                this.formSubmitted = true;
+            }
+        }
+    })
+
+</script>
+</body>
+</html>
+
