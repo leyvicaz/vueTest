@@ -10,62 +10,74 @@
 
     <title>Curso de Vue 2 - Styde.net</title>
 
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div id="app" class="container">
-    <div v-if="!formSubmitted">
-        <form @submit.prevent="submitForm">
-            <h4>Regístrate:</h4>
-
-            <div class="form-group">
-                <label for="first_name">Nombre:</label>
-                <input v-model="first_name" type="text" id="first_name" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="last_name">Apellido:</label>
-                <input v-model="last_name" type="text" id="last_name" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-primary"
-                :disabled="!isFormValid()">Continuar</button>
-        </form>
+    {{$data}}
+    <!-- required -->
+    <h4>¿Has trabajado con Vue.js?</h4>
+    <div class="radio">
+        <label class="radio-inline">
+            <input type="radio" v-model="vue.exp" :value="true"> Sí
+        </label>
+        <label class="radio-inline">
+            <input type="radio" v-model="vue.exp" :value="false"> No
+        </label>
     </div>
-    <div v-else>
-        <h4>Bienvenido, {{ first_name }} {{ last_name }}</h4>
-    </div>
+    <template v-if="vue.exp">
+        <div class="form-group">
+            <label for="vue_years">¿Cuantos años de experiencia tienes con Vue?</label>
+            <input type="number" v-model="vue.years" class="form-control">
+        </div>
+
+        <!-- Si tiene un año de experiencia o menos -->
+        <div v-if="vue.years < 2" class="form-group">
+            <label for="vue_years">¿Qué te motivó a aprender Vue?</label>
+            <textarea class="form-control" v-model="vue.description" rows="4"></textarea>
+        </div>
+
+        <!-- Si ha trabajado dos años o más -->
+        <div v-if="vue.years >= 2" class="form-group">
+            <label for="vue_years">Cuéntanos tu experiencia con Vue.js</label>
+            <textarea class="form-control" v-model="vue.description" rows="4"></textarea>
+        </div>
+        <p class="text-danger" v-if="vue.description.length < 1">
+            {{ vue.years < 2 ? 'Debes comentar el motivo por el cual estas aprendiendo VUE' : 'No olvides contarnos que te ha parecido VUE' }}
+        </p>
+        <!-- Si la respuesta es sí -->
+    </template>
 
     <footer class="footer">
         <p>&copy; 2017 Styde.net.</p>
     </footer>
 </div>
-<script src="js/vue2.1.8.js" type="text/javascript"></script>
+
+<script src="https://unpkg.com/vue@2.1.8/dist/vue.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+
 <script>
-
-    new Vue({
-        el : "#app",
-        data : {
-            first_name : '',
-            last_name : '',
-            formSubmitted : false
-        },
-        methods : {
-            isFormValid : function () {
-                return this.first_name != "" && this.last_name != ""
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            vue:{
+                exp: null,
+                years:0,
+                description:''
             },
-            submitForm : function () {
-                if(!this.isFormValid()) return;
-
-                this.formSubmitted = true;
-            }
         }
-    })
-
+    });
 </script>
 </body>
 </html>
+
+
+
+
+
+
+
 
