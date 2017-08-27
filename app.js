@@ -1,3 +1,5 @@
+//Se declara una nueva instancia de Vue
+EventBus = new Vue;
 Vue.component('app-icon',{
     template: '<span :class="cssClasses" aria-hidden="true"></span>',
     props: ['img'],
@@ -17,11 +19,23 @@ Vue.component('app-task',{
     },
     template: '#task-template',
     props : ['task', 'index'],
+    created : function () {
+        //Para escuchar los eventos emitidos por otro componente
+        EventBus.$on('editing', function (index) {
+            if(this.index != index){
+                console.log('Discard: ' + this.index)
+                this.discard()
+            }
+        }.bind(this))
+    },
     methods : {
         toggleStatus : function () {
             this.task.pending = !this.task.pending;
         },
         edit : function () {
+            console.log('Editing: ' + this.index)
+            //Se declara el evento que informara a los demas componentes, aun cuando no tengan relacion entre si
+            EventBus.$emit('editing', this.index)
             //FIX ME
             /*this.tasks.forEach(function (task) {
                 task.editing = false
